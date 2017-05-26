@@ -41,11 +41,11 @@ public class TicTacToeClient {
         out = new PrintWriter(socket.getOutputStream(), true);
 
         // Layout GUI
-        messageLabel.setBackground(Color.lightGray);
+        messageLabel.setBackground(Color.magenta);
         frame.getContentPane().add(messageLabel, "South");
 
         JPanel boardPanel = new JPanel();
-        boardPanel.setBackground(Color.black);
+        boardPanel.setBackground(Color.pink);
         boardPanel.setLayout(new GridLayout(3, 3, 2, 2));
         
         for (int i = 0; i < board.length; i++) {
@@ -60,7 +60,12 @@ public class TicTacToeClient {
         frame.getContentPane().add(boardPanel, "Center");
     }
 
- 
+   //* The main thread of the client will listen for messages from the server.  
+   //The first message will be a "WELCOME" message in which we receive our mark.  
+   //Then we go into a loop listening for: 
+   //--> "VALID_MOVE", --> "OPPONENT_MOVED", --> "VICTORY", --> "DEFEAT", --> "TIE", --> "OPPONENT_QUIT, --> "MESSAGE" messages, and handling each message appropriately.
+   //The "VICTORY","DEFEAT" and "TIE" ask the user whether or not to play another game. 
+   //If the answer is no, the loop is exited and the server is sent a "QUIT" message.  If an OPPONENT_QUIT message is recevied then the loop will exit and the server will be sent a "QUIT" message also.
     public void play() throws Exception {
         String response;
         try {
@@ -108,6 +113,7 @@ public class TicTacToeClient {
     private boolean wantsToPlayAgain() {
         int response = JOptionPane.showConfirmDialog(frame,
             "Want to play again?",
+            "Replay",
             JOptionPane.YES_NO_OPTION);
         frame.dispose();
         return response == JOptionPane.YES_OPTION;
